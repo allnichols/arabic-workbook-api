@@ -3,6 +3,7 @@ import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '../db/schema';
 import { DB } from 'src/db/db.provider';
 import { EmailService } from './email/email.service';
+import { generateToken, hashToken } from './utils/token.utils';
 
 @Injectable()
 export class AuthService {
@@ -14,14 +15,14 @@ export class AuthService {
     ) {}
 
     async sendMagicLink(email: string) {
-        const token = 'generate token';
-        const hashToken = 'hash token';
+        const token = generateToken();
+        const hashedToken = hashToken(token);
 
-        const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
         await this.db.insert(schema.magicLinkTokens).values({
             email,
-            token: hashToken,
+            token: hashedToken,
             expiresAt,
         });
 
