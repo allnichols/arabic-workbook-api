@@ -7,7 +7,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('magic-link')
-  async requestMagicLink(@Body()dto: RequestMagicDto) {
-    return this.authService.requestMagicLink(dto.email);
+  async sendMagicLink(@Body()dto: RequestMagicDto) {
+    return this.authService.sendMagicLink(dto.email);
   }
 }
